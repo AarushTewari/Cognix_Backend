@@ -1,0 +1,6 @@
+keyconfig.py
+venv
+*/migrations
+*/migrations/*
+__pycache__
+*/config/
