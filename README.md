@@ -17,7 +17,7 @@ DATABASE_NAME = "YOUR DATABASE NAME"
 CREDENTIALS_JSON = path.join(path.dirname(path.realpath(__file__)), "config", "file.json")
 
 ```
-## Now in the same folder create a folder called config and inside it create a file name ```file.json``` and add the following code
+Now in the same folder create a folder called config and inside it create a file name ```file.json``` and add the following code
 
 ```json
 
