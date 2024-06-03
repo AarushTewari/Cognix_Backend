@@ -2,7 +2,7 @@ This is the repository which stores the backend code for my work @Cognix Technol
 
 # Locally setting up the project
 
-## Create a file called keyconfig.py in the same folder as your settings.py file and add the following code 
+Create a file called ```keyconfig.py``` in the same folder as your ```settings.py``` file and add the following code 
 
 ```python
 
@@ -17,7 +17,7 @@ DATABASE_NAME = "YOUR DATABASE NAME"
 CREDENTIALS_JSON = path.join(path.dirname(path.realpath(__file__)), "config", "file.json")
 
 ```
-## Now in the same folder create a folder called config and inside it create a file name file.json and add the following code
+## Now in the same folder create a folder called config and inside it create a file name ```file.json``` and add the following code
 
 ```json
 
@@ -49,4 +49,4 @@ python manage.py runserver
 
 ```
 
-Now the project can be accessed at http://127.0.0.1:8000/.
+Now the project can be accessed at ```http://127.0.0.1:8000/```.
