@@ -63,9 +63,18 @@ class UserLogoutView(APIView):
 class ChatRequestViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,]
     serializer_class = ChatRequestSerializer
+    lookup_field = "static_id"
     
     def get_queryset(self):
         return ChatRequest.objects.all()
+    
+    def get_object(self):
+        if not self.kwargs["static_id"]:
+            return Response({"message": "No static_id provided"}, status = status.HTTP_400_BAD_REQUEST)
+        try:
+            return ChatRequest.objects.filter(static_id = self.kwargs["static_id"]).first()
+        except ChatRequest.DoesNotExist:
+            return Response({"message": "No such chat request"}, status = status.HTTP_404_NOT_FOUND)
     
     def list(self, request, *args, **kwargs):
         try:
@@ -77,15 +86,19 @@ class ChatRequestViewset(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"message" : str(e)}, status = status.HTTP_400_BAD_REQUEST)
     
-    def update(self, request):
-        data = request.body
+    def partial_update(self, request, *args, **kwargs):
+        data = request.data
         if "new_status" not in data:
-            return Response({"message": "Insufficient Query Params"}, status = status.HTTP_400_BAD_REQUEST)
-        try:
-            super().create(request)
-            return Response({"message":"Updated"}, status = status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response({"message": str(e)}, status = status.HTTP_400_BAD_REQUEST)
+            return Response({"message" : "Insufficient data"}, status = status.HTTP_400_BAD_REQUEST)
+        obj = self.get_object()
+        obj.status = data['new_status']
+        obj.save()
+        if data["new_status"] == "Accepted":
+            return Response({"message":"Request Accepted"},status = status.HTTP_200_OK)
+        elif data["new_status"] == "Declined":
+            return Response({"message":"Request Declined"},status = status.HTTP_200_OK)
+        else:
+            return Response({"message":"Incorrect status"},status = status.HTTP_400_BAD_REQUEST)
         
         
             
