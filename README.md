@@ -48,5 +48,12 @@ python manage.py migrate
 python manage.py runserver
 
 ```
+Note - In case of a windows system replace the first 2 commands by the following
+```
+
+python3 -m venv venv
+venv\Scripts\activate
+
+```
 
 Now the project can be accessed at ```http://127.0.0.1:8000/```.
