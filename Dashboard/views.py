@@ -13,6 +13,7 @@ from rest_framework_simplejwt.tokens  import RefreshToken
 from YogiG.settings import SIMPLE_JWT
 from django.views import View
 from rest_framework import viewsets
+from rest_framework.decorators import action
 
 class Index(View):
     def get(self, request):
@@ -80,7 +81,7 @@ class ChatRequestViewset(viewsets.ModelViewSet):
         try:
             qs = self.get_queryset()
             user = AppUser.objects.filter(auth_user = request.user).first()
-            qs = qs.filter(reciever = user)
+            qs = qs.filter(reciever = user, status = "Pending")
             serializer = self.get_serializer(qs, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
@@ -100,7 +101,14 @@ class ChatRequestViewset(viewsets.ModelViewSet):
         else:
             return Response({"message":"Incorrect status"},status = status.HTTP_400_BAD_REQUEST)
         
-        
-            
-            
-        
+    @action(detail = False, methods=['get'])
+    def sender_list(self, request):
+        active_chats = ChatRequest.objects.filter(sender__auth_user = request.user, status = "Pending")
+        response = ChatRequestSerializer(active_chats, many = True, context = {"request":request})
+        return Response(response.data, status = status.HTTP_200_OK)
+    
+    @action(detail = False, methods = ['get'])
+    def active_chats(self, request):
+        active_chats = ChatRequest.objects.filter(reciever__auth_user = request.user, status = "Accepted")
+        response = ChatRequestSerializer(active_chats, many = True)
+        return Response(response.data, status = status.HTTP_200_OK)
