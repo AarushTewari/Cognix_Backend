@@ -25,7 +25,7 @@ class UserLoginView(APIView):
     def post(self, request):
         if not firebase_admin._apps:
             cred = credentials.Certificate(senv.CREDENTIALS_JSON)
-            app = firebase_admin.initialize_app(cred)
+            firebase_admin.initialize_app(cred)
         data = json.loads(request.body)
         if "firebase_id" not in data:
             return Response({"message": "Insufficient Query Params"}, status = status.HTTP_400_BAD_REQUEST)
