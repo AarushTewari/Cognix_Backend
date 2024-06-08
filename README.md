@@ -2,6 +2,13 @@ This is the repository which stores the backend code for my work @Cognix Technol
 
 # Locally setting up the project
 
+Open the terminal and type the follwing command - 
+```
+git clone https://github.com/AarushTewari/Cognix_Backend.git
+
+```
+
+
 Create a file called ```keyconfig.py``` in the same folder as your ```settings.py``` file and add the following code 
 
 ```python
