@@ -14,10 +14,6 @@ from YogiG.settings import SIMPLE_JWT
 from django.views import View
 from rest_framework import viewsets
 from rest_framework.decorators import action
-
-class Index(View):
-    def get(self, request):
-        return redirect('register')
     
 class UserLoginView(APIView):
     permission_classes = [AllowAny,]
