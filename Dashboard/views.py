@@ -29,10 +29,10 @@ class UserLoginView(APIView):
         try:
             user = auth.get_user(firebase_id)
             email = user.email
-            app_user = AppUser.objects.filter(auth_user__email = email)
+            app_user = UserProfile.objects.filter(auth_user__email = email)
             if not app_user.exists():
                 new_user, created = User.objects.get_or_create(username = email, email = email)
-                app_user = AppUser.objects.create(auth_user = new_user)
+                app_user = UserProfile.objects.create(auth_user = new_user)
             else:
                 app_user = app_user[0]
                 
@@ -76,7 +76,7 @@ class ChatRequestViewset(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         try:
             qs = self.get_queryset()
-            user = AppUser.objects.filter(auth_user = request.user).first()
+            user = UserProfile.objects.filter(auth_user = request.user).first()
             qs = qs.filter(reciever = user, status = "Pending")
             serializer = self.get_serializer(qs, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
